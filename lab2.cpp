@@ -50,7 +50,7 @@ unsigned length(String const &str){
 
 
 String& copy(String &dst, String const &src){
-    delete dst.cstr;
+    delete[] dst.cstr;
     dst.len=src.len;
 
 
@@ -79,6 +79,7 @@ String& append(String &dst, char const *cstr){
     if (dst.real_len <= dst.len) {
         char *tmp = dst.cstr;
         dst.cstr = new char[2*dst.len + 1];
+        dst.real_len = 2*dst.len + 1;
         for (unsigned i = 0; i < tmp_len; i++) {
             dst.cstr[i] = tmp[i];
         }
@@ -86,6 +87,7 @@ String& append(String &dst, char const *cstr){
             dst.cstr[i + tmp_len] = cstr[i];
         }
         dst.cstr[dst.len] = 0;
+        delete tmp;
     }
     else{
         for (unsigned i = 0; i < add_len; ++i) {
@@ -112,6 +114,7 @@ String& append(String &dst, String const &src){
             dst.cstr[i + tmp_len] = src.cstr[i];
         }
         dst.cstr[dst.len] = 0;
+        delete tmp;
     }
     else{
         for (unsigned i = 0; i < add_len; ++i) {
@@ -128,14 +131,4 @@ void print(String const &str){
 }
 
 
-int main() {
-    String s = new_string("Hello");
-    std::cout << s.len << " " << s.cstr<< std::endl;
-    String t = new_string();
 
-    copy(t, s); set_char_at(t, 3, '1');
-    std::cout << t.len << " " << t.cstr<< std::endl;
-    print(append(t, "dfdgfr"));
-    std::cout<< "\n" <<  t.len << " " << t.cstr<<std::endl;
-    delete_string(t);
-}
