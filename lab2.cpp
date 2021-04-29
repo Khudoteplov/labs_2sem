@@ -10,37 +10,40 @@ struct String{
 
 
 String new_string(char const *cstr){
-    String *tmp = new String;
-    tmp->len = strlen(cstr);
-    tmp->cstr = new char[2*tmp->len+1];
-    tmp->real_len = 2*tmp->len+1;
-    strcpy(tmp->cstr, cstr);
-    return *tmp;
+    String tmp;
+    tmp.len = strlen(cstr);
+    tmp.cstr = new char[2*tmp.len+1];
+    tmp.real_len = 2*tmp.len+1;
+    strcpy(tmp.cstr, cstr);
+    return tmp;
 }
 
 
 String new_string(){
-    String *tmp = new String;
-    tmp->len =0 ;
-    tmp->cstr= 0 ;
-    tmp->real_len  =0;
-    return *tmp;
+    String tmp;
+    tmp.len =0 ;
+    tmp.cstr= 0 ;
+    tmp.real_len  =0;
+    return tmp;
 }
 
 
 String new_string(String const &src){
-    auto tmp = new String;
-    tmp->len = src.len;
-    tmp->cstr = new char[2*tmp->len+1];
-    tmp->real_len = 2*tmp->len+1;
-    strcpy(tmp->cstr, src.cstr);
-    return *tmp;
+    String tmp;
+    tmp.len = src.len;
+    tmp.cstr = new char[2*tmp.len+1];
+    tmp.real_len = 2*tmp.len+1;
+    strcpy(tmp.cstr, src.cstr);
+    return tmp;
 }
 
 
 void delete_string(String &str){
 
     delete[] (str.cstr);
+    str.len = 0;
+    str.real_len = 0;
+
 }
 
 
@@ -50,13 +53,9 @@ unsigned length(String const &str){
 
 
 String& copy(String &dst, String const &src){
-    delete[] dst.cstr;
-    dst.len=src.len;
-
-
-    dst.cstr= new char[2*dst.len + 1];
-    dst.real_len = 2*dst.len + 1;
-    strcpy(dst.cstr, src.cstr);
+    auto tmp = new char[2*dst.len + 1];
+    strcpy(tmp, src.cstr);
+    delete[] dst.cstr; dst.cstr = tmp; dst.len = src.len; dst.real_len=2*dst.len + 1;
     return dst;
 }
 
@@ -100,29 +99,7 @@ String& append(String &dst, char const *cstr){
 
 
 String& append(String &dst, String const &src){
-    unsigned tmp_len=dst.len;
-    unsigned add_len=src.len;
-    dst.len += add_len;
-
-    if (dst.real_len <= dst.len) {
-        char *tmp = dst.cstr;
-        dst.cstr = new char[2*dst.len + 1];
-        for (unsigned i = 0; i < tmp_len; i++) {
-            dst.cstr[i] = tmp[i];
-        }
-        for (unsigned i = 0; i < add_len; ++i) {
-            dst.cstr[i + tmp_len] = src.cstr[i];
-        }
-        dst.cstr[dst.len] = 0;
-        delete tmp;
-    }
-    else{
-        for (unsigned i = 0; i < add_len; ++i) {
-            dst.cstr[i + tmp_len] = src.cstr[i];
-        }
-        dst.cstr[dst.len] = 0;
-    }
-    return dst;
+    return append(dst, src.cstr);
 }
 
 

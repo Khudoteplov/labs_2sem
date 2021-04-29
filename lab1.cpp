@@ -10,20 +10,20 @@ struct List{
 };
 
 List new_list(){
-    List *q = new List;
-    q->head = nullptr;
-    return *q;
+    List q;
+    q.head = nullptr;
+    return q;
 }
 
 List new_list(List const &lst){
-    List *q = new List;
+    List q;
     ListPair *t = lst.head;
     if (t == nullptr){
-        q->head = nullptr;
+        q.head = nullptr;
     }
     else{
         ListPair *n = new ListPair, *p;
-        q->head = n;
+        q.head = n;
         while (t != nullptr){
             if (t->tail != nullptr){
                 p = new ListPair;
@@ -39,8 +39,7 @@ List new_list(List const &lst){
             }
         }
     }
-
-    return *q;
+    return q;
 }
 
 List push_list(List &lst, int num){
@@ -70,7 +69,6 @@ void delete_list(List &lst){
         lst.head = (lst.head)->tail;
         delete t;
     }
-    delete &lst;
 }
 
 bool is_empty(List const &lst){

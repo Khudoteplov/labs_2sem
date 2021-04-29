@@ -8,42 +8,38 @@
 struct String1{
     char *cstr;
     unsigned len;
-    unsigned real_len;
 };
 
 
 String1 new_string1(char const *cstr){
-    String1 *tmp = new String1;
-    tmp->len = strlen(cstr);
-    tmp->cstr = new char[tmp->len+1];
-    tmp->real_len = tmp->len+1;
-    strcpy(tmp->cstr, cstr);
-    return *tmp;
+    String1 tmp;
+    tmp.len = strlen(cstr);
+    tmp.cstr = new char[tmp.len+1];
+    strcpy(tmp.cstr, cstr);
+    return tmp;
 }
 
 
 String1 new_string1(){
-    String1 *tmp = new String1;
-    tmp->len =0 ;
-    tmp->cstr= 0 ;
-    tmp->real_len  =0;
-    return *tmp;
+    String1 tmp;
+    tmp.len =0 ;
+    tmp.cstr= 0 ;
+    return tmp;
 }
 
 
 String1 new_string1(String1 const &src){
-    auto tmp = new String1;
-    tmp->len = src.len;
-    tmp->cstr = new char[tmp->len+1];
-    tmp->real_len = tmp->len+1;
-    strcpy(tmp->cstr, src.cstr);
-    return *tmp;
+    String1 tmp;
+    tmp.len = src.len;
+    tmp.cstr = new char[tmp.len+1];
+    strcpy(tmp.cstr, src.cstr);
+    return tmp;
 }
 
 
 void delete_string1(String1 &str){
-
     delete[] (str.cstr);
+    str.len = 0;
 }
 
 
@@ -53,16 +49,13 @@ unsigned length1(String1 const &str){
 
 
 String1& copy1(String1 &dst, String1 const &src){
-    delete dst.cstr;
-    dst.len=src.len;
-
-
-    dst.cstr= new char[dst.len + 1];
-    dst.real_len = dst.len + 1;
-    strcpy(dst.cstr, src.cstr);
+    auto tmp = new char[dst.len + 1];
+    strcpy(tmp, src.cstr);
+    delete[] dst.cstr;
+    dst.len = src.len;
+    dst.cstr = tmp;
     return dst;
 }
-
 
 
 String1& append1(String1 &dst, char const *cstr){

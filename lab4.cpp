@@ -111,9 +111,7 @@ public:
             }
             else{
                 right->rotate_right();
-                bool e = this->rotate_left();
-
-                return e;
+                return this->rotate_left();
             }
         }
         if (l-r ==2){
